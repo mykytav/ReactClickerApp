@@ -1,0 +1,142 @@
+body {
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(to left, rgb(5, 138, 60), rgb(19, 206, 66));
+}
+
+.black {
+  color: #192319;
+  font-weight: bold;
+}
+
+.app {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  height: 100vh;
+}
+
+.bg {
+  background: cornflowerblue;
+}
+
+.app__click {
+  flex-basis: 60%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.app__sidebar {
+  flex-basis: 40%;
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(237, 245, 237, 0.75);
+  box-shadow: 0px 1px 10px 3px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  padding: 5px;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.progress {
+  color: #fafffa;
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.progress span {
+  text-align: center;
+}
+
+.clicker {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://uploads.codesandbox.io/uploads/user/ab449932-5038-4848-8970-6aba9636669d/RJlQ-Cookie-PNG-Image.png");
+  background-size: cover;
+  padding: 5px;
+  margin-top: 10px;
+  position: relative;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.clicker.bgCookie {
+  background-image: url("https://uploads.codesandbox.io/uploads/user/ab449932-5038-4848-8970-6aba9636669d/e9Sc-cropped-13709624271.png");
+  background-size: cover;
+}
+
+.clicker:hover {
+  cursor: pointer;
+}
+
+.clicker__count {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fcc600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.achievement {
+  background: rgba(63, 245, 163, 0.88);
+  border-radius: 4px;
+  color: #000;
+  position: relative;
+  padding: 4px 15px;
+}
+
+.achievement__btn {
+  position: absolute;
+  top: 3px;
+  right: 8px;
+  color: #000;
+}
+
+.achievement__btn:hover {
+  cursor: pointer;
+}
+
+.fade-enter {
+  opacity: 0.01;
+  transform: translateX(-50%);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 600ms ease;
+}
+
+.fade-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-exit-active {
+  opacity: 0.01;
+  transform: translateX(50%);
+  transition: all 600ms ease;
+}
+
+@media (max-width: 480px) {
+  .app {
+    flex-direction: column;
+  }
+}
