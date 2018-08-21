@@ -1,24 +1,37 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import mojs from "mo-js";
 import PropTypes from "prop-types";
 
-class Clicker extends React.Component {
-  componentDidMount() {
-    const countAnimation = new mojs.Html({
-      el: "#clicker--count",
-      isShowStart: false,
-      isShowEnd: true,
-      y: { 0: -90, duration: 250, easing: "sin.out" },
-      opacity: { 0: 1 },
-      duration: 150
-    }).then({
-      opacity: { 1: 0 },
-      y: -190,
-      delay: 0
-    });
+import ClickerCount from "./ClickerCount";
 
-    const triangleBurst = new mojs.Burst({
-      parent: "#clicker",
+class Clicker extends React.Component {
+  constructor(props) {
+  	super(props);
+  	this.state = {
+      clickerCounts: [],
+      triangleBurstComplete: true,
+      posX: 0,
+      posY: 0
+    };
+  }
+
+  unmountClickerCount = () => {
+    // Every 25 clicks, unmount everything
+    if (this.state.clickerCounts.length > 25)
+      this.setState((prevState) => ({
+        clickerCounts: []
+      }));
+  }
+
+  updateTriangleBurstComplete = () => {
+    this.setState({ triangleBurstComplete: false });
+  }
+
+  componentDidMount() {
+    this.triangleBurstDuration = 400;
+    this.triangleBurst = new mojs.Burst({
+      parent: ReactDOM.findDOMNode(this),
       radius: { 40: 130 },
       count: 10,
       angle: 36,
@@ -32,47 +45,72 @@ class Clicker extends React.Component {
         delay: 30,
         speed: 0.82,
         easing: mojs.easing.bezier(0.3, 1, 0.3, 1),
-        duration: 400
+        duration: this.triangleBurstDuration
       }
     });
-
-    this._animationTimeline = new mojs.Timeline();
-    this._animationTimeline.add([countAnimation, triangleBurst]);
   }
 
-  handleMouseUp = () => {
-    this._animationTimeline.replay();
+  handleMouseUp = (e) => {
+    if (this.state.intervalId) {
+      clearInterval(this.state.intervalId);
+    }
+    const intervalId = setInterval(() => {
+      this.setState({ triangleBurstComplete: true });
+    }, this.triangleBurstDuration);
+
+    const { perClick } = this.props;
+    const body = document.body;
+    const clicker = ReactDOM.findDOMNode(this).getBoundingClientRect();
+    const x = (e.pageX - (clicker.left + body.scrollLeft - body.clientLeft)) - 100;
+    const y = (e.pageY - (clicker.top + body.scrollTop - body.clientTop)) - 100;
+    this.setState((prevState) => ({
+      clickerCounts: [...prevState.clickerCounts, perClick],
+      intervalId: intervalId,
+      posX: x,
+      posY: y
+    }));
   };
 
+  buildClickerCounts() {
+    return this.state.clickerCounts.map((perClick, index) => (
+      <ClickerCount
+        perClick={perClick}
+        unmount={this.unmountClickerCount}
+        triangleBurst={this.triangleBurst}
+        triangleBurstComplete={this.state.triangleBurstComplete}
+        updateTriangleBurstComplete={this.updateTriangleBurstComplete}
+        posX={this.state.posX}
+        posY={this.state.posY}
+        key={index}
+      />
+    ));
+  }
+
   render() {
-    const { clicks, handleCountClicks, perClick } = this.props;
+    const { showBgCookie, handleCountClicks } = this.props;
+    let clickerCounts = this.buildClickerCounts();
+
     return (
       <div
         id="clicker"
-        className={
-          clicks % 25 === 0 && clicks !== 0 ? "clicker bgCookie" : "clicker"
-        }
+        className={showBgCookie ? "clicker bgCookie" : "clicker"}
         onClick={handleCountClicks}
         onMouseUp={this.handleMouseUp}
       >
-        <span id="clicker--count" className="clicker__count">
-          +{perClick}
-        </span>
+        {clickerCounts}
       </div>
     );
   }
 }
 
 Clicker.defaultProps = {
-  clicks: 0,
   perClick: 1,
-  handleCountClicks: () => {}
+  handleCountClicks: () => {},
 };
 
 Clicker.propTypes = {
-  clicks: PropTypes.number.isRequired,
   perClick: PropTypes.number.isRequired,
-  handleCountClicks: PropTypes.func
+  handleCountClicks: PropTypes.func,
 };
 
 export default Clicker;

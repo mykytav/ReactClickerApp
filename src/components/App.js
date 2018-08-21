@@ -120,12 +120,24 @@ class App extends React.Component {
       perSecond,
       achievements
     } = this.state;
+    // Is multiple of 25, or multiple of 25 plus, one to five
+    const showBgCookie = (
+      clickCounts !== 0 &&
+      clickCounts !== 1 &&
+      clickCounts !== 2 &&
+      clickCounts !== 3 &&
+      clickCounts !== 4 &&
+      (
+        clickCounts % 25 === 0 ||
+        (clickCounts - 1) % 25 === 0 ||
+        (clickCounts - 2) % 25 === 0 ||
+        (clickCounts - 3) % 25 === 0 ||
+        (clickCounts - 4) % 25 === 0
+      )
+    );
+
     return (
-      <div
-        className={
-          clickCounts % 25 === 0 && clickCounts !== 0 ? "app bg" : "app"
-        }
-      >
+      <div className={showBgCookie ? "app bg" : "app"}>
         <div className="app__click">
           <Progress
             perSecond={perSecond}
@@ -135,7 +147,7 @@ class App extends React.Component {
           />
           <Clicker
             handleCountClicks={this.handleClickCounts}
-            clicks={clickCounts}
+            showBgCookie={showBgCookie}
             perClick={perClick}
           />
         </div>
