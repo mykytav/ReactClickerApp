@@ -1,13 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Clicker from "./Clicker";
-import Progress from "./Progress";
-import AchievementSidebar from "./AchievementSidebar";
+import Clicker from './Clicker';
+import Progress from './Progress';
+import AchievementSidebar from './AchievementSidebar';
 
-import showLevel from "../helpers/showLevel";
-import updatePerClick from "../helpers/updatePerClick";
-import updatePerSecond from "../helpers/updatePerSecond";
+import showLevel from '../helpers/showLevel';
+import updatePerClick from '../helpers/updatePerClick';
+import updatePerSecond from '../helpers/updatePerSecond';
+import bgGenerator from '../helpers/bgGenerator';
 
 class App extends React.Component {
   constructor(props) {
@@ -63,7 +64,7 @@ class App extends React.Component {
       achievements: [
         ...prevState.achievements,
         {
-          type: "level",
+          type: 'level',
           text: `Your level has been upgrated to ${prevState.level}`,
           id: `level${prevState.level}`
         }
@@ -76,7 +77,7 @@ class App extends React.Component {
       achievements: [
         ...prevState.achievements,
         {
-          type: "perClick",
+          type: 'perClick',
           text: `For 1 click you add ${prevState.perClick} points`,
           id: `perClick${prevState.perClick}`
         }
@@ -89,9 +90,9 @@ class App extends React.Component {
       achievements: [
         ...prevState.achievements,
         {
-          type: "level",
+          type: 'level',
           text: `For 1 second you get ${prevState.perSecond} ${
-            prevState.perSecond === 1 ? "point" : "points"
+            prevState.perSecond === 1 ? 'point' : 'points'
           }`,
           id: `perSecond${prevState.perSecond}`
         }
@@ -121,23 +122,23 @@ class App extends React.Component {
       achievements
     } = this.state;
     // Is multiple of 25, or multiple of 25 plus, one to five
-    const showBgCookie = (
+    const showBgCookie =
       clickCounts !== 0 &&
       clickCounts !== 1 &&
       clickCounts !== 2 &&
       clickCounts !== 3 &&
       clickCounts !== 4 &&
-      (
-        clickCounts % 25 === 0 ||
+      (clickCounts % 25 === 0 ||
         (clickCounts - 1) % 25 === 0 ||
         (clickCounts - 2) % 25 === 0 ||
         (clickCounts - 3) % 25 === 0 ||
-        (clickCounts - 4) % 25 === 0
-      )
-    );
+        (clickCounts - 4) % 25 === 0);
 
     return (
-      <div className={showBgCookie ? "app bg" : "app"}>
+      <div
+        className="app"
+        style={showBgCookie ? { background: bgGenerator() } : {}}
+      >
         <div className="app__click">
           <Progress
             perSecond={perSecond}

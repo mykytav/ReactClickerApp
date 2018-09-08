@@ -1,14 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import mojs from "mo-js";
-import PropTypes from "prop-types";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import mojs from 'mo-js';
+import PropTypes from 'prop-types';
 
-import ClickerCount from "./ClickerCount";
+import ClickerCount from './ClickerCount';
 
 class Clicker extends React.Component {
   constructor(props) {
-  	super(props);
-  	this.state = {
+    super(props);
+    this.state = {
       clickerCounts: [],
       triangleBurstComplete: true,
       posX: 0,
@@ -17,16 +17,16 @@ class Clicker extends React.Component {
   }
 
   unmountClickerCount = () => {
-    // Every 25 clicks, unmount everything
-    if (this.state.clickerCounts.length > 25)
-      this.setState((prevState) => ({
+    // Every 5 clicks, unmount everything
+    if (this.state.clickerCounts.length > 5)
+      this.setState(prevState => ({
         clickerCounts: []
       }));
-  }
+  };
 
   updateTriangleBurstComplete = () => {
     this.setState({ triangleBurstComplete: false });
-  }
+  };
 
   componentDidMount() {
     this.triangleBurstDuration = 400;
@@ -36,10 +36,10 @@ class Clicker extends React.Component {
       count: 10,
       angle: 36,
       children: {
-        shape: "polygon",
+        shape: 'polygon',
         radius: { 6: 0 },
         scale: 1,
-        stroke: "rgba(255, 243, 0, 1)",
+        stroke: 'rgba(255, 243, 0, 1)',
         strokeWidth: 3,
         angle: 30,
         delay: 30,
@@ -50,7 +50,7 @@ class Clicker extends React.Component {
     });
   }
 
-  handleMouseUp = (e) => {
+  handleMouseUp = e => {
     if (this.state.intervalId) {
       clearInterval(this.state.intervalId);
     }
@@ -61,9 +61,10 @@ class Clicker extends React.Component {
     const { perClick } = this.props;
     const body = document.body;
     const clicker = ReactDOM.findDOMNode(this).getBoundingClientRect();
-    const x = (e.pageX - (clicker.left + body.scrollLeft - body.clientLeft)) - 100;
-    const y = (e.pageY - (clicker.top + body.scrollTop - body.clientTop)) - 100;
-    this.setState((prevState) => ({
+    const x =
+      e.pageX - (clicker.left + body.scrollLeft - body.clientLeft) - 100;
+    const y = e.pageY - (clicker.top + body.scrollTop - body.clientTop) - 100;
+    this.setState(prevState => ({
       clickerCounts: [...prevState.clickerCounts, perClick],
       intervalId: intervalId,
       posX: x,
@@ -93,7 +94,7 @@ class Clicker extends React.Component {
     return (
       <div
         id="clicker"
-        className={showBgCookie ? "clicker bgCookie" : "clicker"}
+        className={showBgCookie ? 'clicker bgCookie' : 'clicker'}
         onClick={handleCountClicks}
         onMouseUp={this.handleMouseUp}
       >
@@ -105,12 +106,12 @@ class Clicker extends React.Component {
 
 Clicker.defaultProps = {
   perClick: 1,
-  handleCountClicks: () => {},
+  handleCountClicks: () => {}
 };
 
 Clicker.propTypes = {
   perClick: PropTypes.number.isRequired,
-  handleCountClicks: PropTypes.func,
+  handleCountClicks: PropTypes.func
 };
 
 export default Clicker;
