@@ -1,10 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import mojs from "mo-js";
-import PropTypes from "prop-types";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import mojs from 'mo-js';
+import PropTypes from 'prop-types';
 
 class ClickerCount extends React.Component {
-
   componentDidMount() {
     const {
       triangleBurst,
@@ -14,15 +13,20 @@ class ClickerCount extends React.Component {
       posX,
       posY
     } = this.props;
-    console.log(posY)
+    console.log(posY);
     const countAnimationDurationBefore = 300;
     const countAnimationDurationAfter = 200;
-    const countAnimationDuration = countAnimationDurationBefore + countAnimationDurationAfter;
+    const countAnimationDuration =
+      countAnimationDurationBefore + countAnimationDurationAfter;
     const countAnimation = new mojs.Html({
       el: ReactDOM.findDOMNode(this),
       isShowStart: false,
       isShowEnd: true,
-      y: { [posY]: posY - 90, duration: countAnimationDurationBefore, easing: "sin.out" },
+      y: {
+        [posY]: posY - 90,
+        duration: countAnimationDurationBefore,
+        easing: 'sin.out'
+      },
       x: posX,
       opacity: { 0: 1 },
       duration: countAnimationDurationAfter
@@ -34,9 +38,8 @@ class ClickerCount extends React.Component {
     countAnimation.play();
     setTimeout(unmount, countAnimationDuration);
 
-    if (triangleBurstComplete)
-      triangleBurst.replay();
-      updateTriangleBurstComplete()
+    if (triangleBurstComplete) triangleBurst.replay();
+    updateTriangleBurstComplete();
   }
 
   render() {
@@ -50,12 +53,12 @@ class ClickerCount extends React.Component {
   }
 }
 
-ClickerCount.defaultProps = {
-  perClick: 1,
+ClickerCount.propTypes = {
+  perClick: PropTypes.number.isRequired
 };
 
-ClickerCount.propTypes = {
-  perClick: PropTypes.number.isRequired,
+ClickerCount.defaultProps = {
+  perClick: 1
 };
 
 export default ClickerCount;

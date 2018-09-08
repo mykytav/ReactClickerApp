@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Progress = ({ clicks, level, perClick, perSecond }) => (
   <div className="progress">
@@ -18,18 +18,18 @@ const Progress = ({ clicks, level, perClick, perSecond }) => (
   </div>
 );
 
-Progress.defaultProps = {
-  clicks: 0,
-  level: 1,
-  perClick: 1,
-  perSecond: 0
-};
-
 Progress.propTypes = {
   clicks: PropTypes.number.isRequired,
   level: PropTypes.number.isRequired,
   perClick: PropTypes.number.isRequired,
   perSecond: PropTypes.number.isRequired
+};
+
+Progress.defaultProps = {
+  clicks: 0,
+  level: 1,
+  perClick: 1,
+  perSecond: 0
 };
 
 export default Progress;

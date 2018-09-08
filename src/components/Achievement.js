@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Achievement = ({ children, id, handleAchievementClose }) => (
   <p className="achievement">
@@ -10,12 +10,12 @@ const Achievement = ({ children, id, handleAchievementClose }) => (
   </p>
 );
 
-Achievement.defaultProps = {
-  handleAchievementClose: () => {}
+Achievement.propTypes = {
+  handleAchievementClose: PropTypes.func.isRequired
 };
 
-Achievement.propTypes = {
-  handleAchievementClose: PropTypes.func
+Achievement.defaultProps = {
+  handleAchievementClose: () => {}
 };
 
 export default Achievement;

@@ -59,7 +59,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("https://uploads.codesandbox.io/uploads/user/ab449932-5038-4848-8970-6aba9636669d/RJlQ-Cookie-PNG-Image.png");
+  background-image: url('https://uploads.codesandbox.io/uploads/user/ab449932-5038-4848-8970-6aba9636669d/RJlQ-Cookie-PNG-Image.png');
   background-size: cover;
   padding: 5px;
   margin-top: 10px;
@@ -74,7 +74,7 @@ body {
 }
 
 .clicker.bgCookie {
-  background-image: url("https://uploads.codesandbox.io/uploads/user/ab449932-5038-4848-8970-6aba9636669d/e9Sc-cropped-13709624271.png");
+  background-image: url('https://uploads.codesandbox.io/uploads/user/ab449932-5038-4848-8970-6aba9636669d/e9Sc-cropped-13709624271.png');
   background-size: cover;
 }
 
@@ -100,14 +100,14 @@ body {
   border-radius: 4px;
   color: #000;
   position: relative;
-  padding: 4px 15px;
+  padding: 5px 20px;
 }
 
 .achievement__btn {
   position: absolute;
   top: 3px;
   right: 8px;
-  color: #000;
+  color: rgb(6, 51, 31);
 }
 
 .achievement__btn:hover {

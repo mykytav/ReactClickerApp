@@ -9,16 +9,17 @@ import showLevel from '../helpers/showLevel';
 import updatePerClick from '../helpers/updatePerClick';
 import updatePerSecond from '../helpers/updatePerSecond';
 import bgGenerator from '../helpers/bgGenerator';
+import showBgCookie from '../helpers/showBgCookie';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.AchievementSidebar = React.createRef();
     this.state = {
       clickCounts: 0,
       level: 1,
       perClick: 1,
-      perSecond: 0,
-      achievements: []
+      perSecond: 0
     };
   }
 
@@ -34,71 +35,33 @@ class App extends React.Component {
   }
 
   updateClicks = () => {
-    this.setState(() => ({
+    this.setState({
       clickCounts: this.state.clickCounts + updatePerSecond(this.state.level)
-    }));
+    });
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      showLevel(prevState.clickCounts) !== showLevel(this.state.clickCounts)
-    ) {
+    const {
+      changeLevelAchievement,
+      changePerClickAchievement,
+      changePerSecondAchievement
+    } = this.AchievementSidebar.current;
+    let { clickCounts, level } = this.state;
+
+    if (showLevel(prevState.clickCounts) !== showLevel(clickCounts)) {
       this.setState(() => ({
-        level: showLevel(this.state.clickCounts)
+        level: showLevel(clickCounts)
       }));
-      this.changeLevelAchievement();
-    } else if (
-      updatePerClick(prevState.level) !== updatePerClick(this.state.level)
-    ) {
+      changeLevelAchievement();
+    } else if (updatePerClick(prevState.level) !== updatePerClick(level)) {
       this.setState(() => ({
-        perClick: updatePerClick(this.state.level),
-        perSecond: updatePerSecond(this.state.level)
+        perClick: updatePerClick(level),
+        perSecond: updatePerSecond(level)
       }));
-      this.changePerClickAchievement();
-      this.changePerSecondAchievement();
+      changePerClickAchievement();
+      changePerSecondAchievement();
     }
   }
-
-  changeLevelAchievement = () => {
-    this.setState(prevState => ({
-      achievements: [
-        ...prevState.achievements,
-        {
-          type: 'level',
-          text: `Your level has been upgrated to ${prevState.level}`,
-          id: `level${prevState.level}`
-        }
-      ]
-    }));
-  };
-
-  changePerClickAchievement = () => {
-    this.setState(prevState => ({
-      achievements: [
-        ...prevState.achievements,
-        {
-          type: 'perClick',
-          text: `For 1 click you add ${prevState.perClick} points`,
-          id: `perClick${prevState.perClick}`
-        }
-      ]
-    }));
-  };
-
-  changePerSecondAchievement = () => {
-    this.setState(prevState => ({
-      achievements: [
-        ...prevState.achievements,
-        {
-          type: 'level',
-          text: `For 1 second you get ${prevState.perSecond} ${
-            prevState.perSecond === 1 ? 'point' : 'points'
-          }`,
-          id: `perSecond${prevState.perSecond}`
-        }
-      ]
-    }));
-  };
 
   handleClickCounts = () => {
     this.setState(prevState => ({
@@ -106,38 +69,13 @@ class App extends React.Component {
     }));
   };
 
-  handleAchievementClose = e => {
-    const id = e.target.id;
-    this.setState(() => ({
-      achievements: this.state.achievements.filter(ach => ach.id !== id)
-    }));
-  };
-
   render() {
-    const {
-      clickCounts,
-      level,
-      perClick,
-      perSecond,
-      achievements
-    } = this.state;
-    // Is multiple of 25, or multiple of 25 plus, one to five
-    const showBgCookie =
-      clickCounts !== 0 &&
-      clickCounts !== 1 &&
-      clickCounts !== 2 &&
-      clickCounts !== 3 &&
-      clickCounts !== 4 &&
-      (clickCounts % 25 === 0 ||
-        (clickCounts - 1) % 25 === 0 ||
-        (clickCounts - 2) % 25 === 0 ||
-        (clickCounts - 3) % 25 === 0 ||
-        (clickCounts - 4) % 25 === 0);
+    const { clickCounts, level, perClick, perSecond } = this.state;
 
     return (
       <div
         className="app"
-        style={showBgCookie ? { background: bgGenerator() } : {}}
+        style={showBgCookie(clickCounts) ? { background: bgGenerator() } : {}}
       >
         <div className="app__click">
           <Progress
@@ -148,33 +86,33 @@ class App extends React.Component {
           />
           <Clicker
             handleCountClicks={this.handleClickCounts}
-            showBgCookie={showBgCookie}
+            showBgCookie={showBgCookie(clickCounts)}
             perClick={perClick}
           />
         </div>
         <AchievementSidebar
-          achievements={achievements}
-          handleAchievementClose={this.handleAchievementClose}
+          ref={this.AchievementSidebar}
+          level={level}
+          perClick={perClick}
+          perSecond={perSecond}
         />
       </div>
     );
   }
 }
 
-App.defaultProps = {
-  clickCounts: 0,
-  level: 1,
-  perClick: 1,
-  perSecond: 0,
-  achievements: []
-};
-
 App.propTypes = {
   clickCounts: PropTypes.number.isRequired,
   level: PropTypes.number.isRequired,
   perClick: PropTypes.number.isRequired,
-  perSecond: PropTypes.number.isRequired,
-  achievements: PropTypes.array
+  perSecond: PropTypes.number.isRequired
+};
+
+App.defaultProps = {
+  clickCounts: 0,
+  level: 1,
+  perClick: 1,
+  perSecond: 0
 };
 
 export default App;

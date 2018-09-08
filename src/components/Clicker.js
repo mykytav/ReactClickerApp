@@ -104,14 +104,14 @@ class Clicker extends React.Component {
   }
 }
 
-Clicker.defaultProps = {
-  perClick: 1,
-  handleCountClicks: () => {}
-};
-
 Clicker.propTypes = {
   perClick: PropTypes.number.isRequired,
   handleCountClicks: PropTypes.func
+};
+
+Clicker.defaultProps = {
+  perClick: 1,
+  handleCountClicks: () => {}
 };
 
 export default Clicker;
